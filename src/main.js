@@ -5,7 +5,6 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
-import axios from 'axios';
 
 const form = document.querySelector('.form');
 const loader = document.querySelector('.loader');
@@ -23,7 +22,7 @@ function handleFormSubmit(event) {
 
   listImages.innerHTML = '';
   loader.classList.add('is-visible');
-  
+
   getPhotosByText(searchText)
     .then(data => {
       if (data.hits.length === 0) {
@@ -35,14 +34,8 @@ function handleFormSubmit(event) {
             'Sorry, there are no images matching your search query. Please try again!',
         });
       }
-
       renderPhotos(data.hits);
       loader.classList.remove('is-visible');
-
-      var lightbox = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
       lightbox.refresh();
     })
     .catch(error => {
@@ -56,3 +49,8 @@ function renderPhotos(objPhotos) {
   const markup = templatePhotos(objPhotos);
   listImages.insertAdjacentHTML('afterbegin', markup);
 }
+
+var lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
