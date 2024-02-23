@@ -84,7 +84,7 @@ img {
   border: 1px solid #4e75ff;
 }
 
-.form-btn {
+.btn {
   border-radius: 8px;
   padding: 8px 16px;
   width: 90px;
@@ -101,8 +101,12 @@ img {
   border: none;
 }
 
-.form-btn:hover {
+.btn:hover {
   background-color: #6c8cff;
+}
+
+.btn-load-more {
+  width: 125px;
 }
 
 /* ================Loader======================*/
@@ -110,14 +114,13 @@ img {
 .loader {
   width: 48px;
   height: 48px;
-  margin-top: 16px;
+  margin: 8px;
   border: 2px solid #4e75ff;
   border-radius: 50%;
   display: inline-block;
   position: relative;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
-  visibility: hidden;
 }
 
 .loader::after {
@@ -216,9 +219,8 @@ img {
   background-color: rgba(46, 47, 66, 0.8);
 }
 
-/* ================Is-Visible======================*/
-.is-visible {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
+/* ================Hidden======================*/
+.hidden {
+  display: none;
+  opacity: 0;
 }
