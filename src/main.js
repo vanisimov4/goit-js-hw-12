@@ -15,51 +15,52 @@ const refs = {
 
 let page;
 let query;
+let maxPage;
 
 refs.form.addEventListener('submit', handleFormSubmit);
-refs.btnLoadMore.addEventListener('click', handleLoadMoreClick)
-
+refs.btnLoadMore.addEventListener('click', handleLoadMoreClick);
 
 async function handleFormSubmit(event) {
   event.preventDefault();
   query = refs.form.elements.text.value.trim();
 
   if (!query) {
-    alert('Empty');
+    showError('Empty field');
     return;
   }
+
   page = 1;
+  refs.listImages.innerHTML = '';
+  showLoader();
 
-  refs.loader.classList.remove('hidden');
+  try {
+    const data = await getPhotosByText(query, page);
+    if (data.hits.length === 0) {
+      showError(
+        'Sorry, there are no images matching your search query. Please try again!'
+      );
+    }
+    maxPage = Math.ceil(data.totalHits / 15);
+    renderPhotos(data.hits);
+  } catch (err) {
+    showError(err);
+  }
 
-  const data = await getPhotosByText(query, page);
-
-      // if (data.hits.length === 0) {
-      //   iziToast.error({
-      //     messageColor: 'white',
-      //     color: '#EF4040',
-      //     position: 'topRight',
-      //     message:
-      //       'Sorry, there are no images matching your search query. Please try again!',
-      //   });
-  // }
-  
-    refs.listImages.innerHTML = '';
-      renderPhotos(data.hits);
-      refs.loader.classList.add('hidden');
-      refs.btnLoadMore.classList.remove('hidden');
-      lightbox.refresh();
-
-    // .catch(error => {
-    //   console.error(error);
+  lightbox.refresh();
+  hideLoader();
+  checkBtnVisibleStatus();
 
   refs.form.reset();
 }
 
 async function handleLoadMoreClick() {
   page += 1;
+  showLoader();
   const data = await getPhotosByText(query, page);
-       renderPhotos(data.hits);
+  renderPhotos(data.hits);
+  lightbox.refresh();
+  hideLoader();
+  checkBtnVisibleStatus();
 }
 
 function renderPhotos(objPhotos) {
@@ -67,7 +68,39 @@ function renderPhotos(objPhotos) {
   refs.listImages.insertAdjacentHTML('beforeend', markup);
 }
 
+function showLoadBtn() {
+  refs.btnLoadMore.classList.remove('hidden');
+}
 
+function hideLoadBtn() {
+  refs.btnLoadMore.classList.add('hidden');
+}
+
+function checkBtnVisibleStatus() {
+  if (page >= maxPage) {
+    hideLoadBtn();
+    showError("We're sorry, but you've reached the end of search results.")
+  } else {
+    showLoadBtn();
+  }
+}
+
+function showLoader() {
+  refs.loader.classList.remove('hidden');
+}
+
+function hideLoader() {
+  refs.loader.classList.add('hidden');
+}
+
+function showError(msg) {
+  iziToast.error({
+    messageColor: 'white',
+    color: '#EF4040',
+    position: 'topRight',
+    message: msg,
+  });
+}
 
 const lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
