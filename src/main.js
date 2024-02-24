@@ -22,6 +22,7 @@ refs.btnLoadMore.addEventListener('click', handleLoadMoreClick);
 
 async function handleFormSubmit(event) {
   event.preventDefault();
+  hideLoadBtn();
   query = refs.form.elements.text.value.trim();
 
   if (!query) {
@@ -61,6 +62,10 @@ async function handleLoadMoreClick() {
   lightbox.refresh();
   hideLoader();
   checkBtnVisibleStatus();
+
+  const height =
+    refs.listImages.firstElementChild.getBoundingClientRect().height;
+  window.scrollBy({ top: 2 * height, behavior: 'smooth' });
 }
 
 function renderPhotos(objPhotos) {
@@ -79,7 +84,7 @@ function hideLoadBtn() {
 function checkBtnVisibleStatus() {
   if (page >= maxPage) {
     hideLoadBtn();
-    showError("We're sorry, but you've reached the end of search results.")
+    showError("We're sorry, but you've reached the end of search results.");
   } else {
     showLoadBtn();
   }
