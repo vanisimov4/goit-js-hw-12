@@ -7,7 +7,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
-  form: document.querySelector('.form'),
+  searchForm: document.querySelector('.form'),
   loader: document.querySelector('.loader'),
   listImages: document.querySelector('ul.gallery'),
   btnLoadMore: document.querySelector('.btn-load-more'),
@@ -17,13 +17,13 @@ let page;
 let query;
 let maxPage;
 
-refs.form.addEventListener('submit', handleFormSubmit);
+refs.searchForm.addEventListener('submit', handleFormSubmit);
 refs.btnLoadMore.addEventListener('click', handleLoadMoreClick);
 
 async function handleFormSubmit(event) {
   event.preventDefault();
   hideLoadBtn();
-  query = refs.form.elements.text.value.trim();
+  query = refs.searchForm.elements.text.value.trim();
 
   if (!query) {
     showError('Empty field');
@@ -51,14 +51,20 @@ async function handleFormSubmit(event) {
   hideLoader();
   checkBtnVisibleStatus();
 
-  refs.form.reset();
+  refs.searchForm.reset();
 }
 
 async function handleLoadMoreClick() {
   page += 1;
   showLoader();
-  const data = await getPhotosByText(query, page);
-  renderPhotos(data.hits);
+
+  try {
+    const data = await getPhotosByText(query, page);
+    renderPhotos(data.hits);
+  } catch (err) {
+    showError(err);
+  }
+
   lightbox.refresh();
   hideLoader();
   checkBtnVisibleStatus();

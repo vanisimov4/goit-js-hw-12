@@ -17,32 +17,12 @@ function templatePhoto(photo) {
       alt='${tags}'
     />
   </a>
-    <ul class="gallery-item-info">
-    <li class='gallery-item-info-categories'> 
-            <div class='gallery-item-info-likes'>
-                    <h3 class="gallery-item-info-title">Likes</h3>
-                <p class="gallery-item-info-text">${likes}</p>
-                </div>
-    </li>
-    <li class='gallery-item-info-categories'> 
-            <div class='gallery-item-info-views'>
-                    <h3 class="gallery-item-info-title">Views</h3>
-                <p class="gallery-item-info-text">${views}</p>
-                  </div>
-    </li>
-    <li class='gallery-item-info-categories'> 
-            <div class='gallery-item-info-comments'>
-                    <h3 class="gallery-item-info-title">Comments</h3>
-                <p class="gallery-item-info-text">${comments}</p>
-                 </div>
-    </li>
-    <li class='gallery-item-info-categories'> 
-            <div class='gallery-item-info-downloads'>
-                    <h3 class="gallery-item-info-title">Downloads</h3>
-                <p class="gallery-item-info-text">${downloads}</p>
-                 </div>
-    </li>
-    </ul>  
+  <ul class="gallery-item-info">
+    <li class='gallery-item-info-categories'>likes<span>${likes}</span></li>
+    <li class='gallery-item-info-categories'>views<span>${views}</span></li> 
+    <li class='gallery-item-info-categories'>comments<span>${comments}</span></li> 
+    <li class='gallery-item-info-categories'>downloads<span>${downloads}</span></li> 
+  </ul>  
 </li>`;
 }
 
